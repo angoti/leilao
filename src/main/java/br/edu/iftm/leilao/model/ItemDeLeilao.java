@@ -4,16 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString(exclude = {"lancesRecebidos","lanceVencedor"})
+@EqualsAndHashCode(of = {"nome", "valorMinimo"})
 @Entity
 public class ItemDeLeilao {
 	@Id
@@ -23,21 +30,11 @@ public class ItemDeLeilao {
 	private Double valorMinimo;
 	private boolean leilaoAberto;
 
-	// Relacionamento bidirecional
-	// Um item de leilão pode ter vários lances
-	@OneToMany
-	@Getter(lombok.AccessLevel.NONE)
-	@Setter(lombok.AccessLevel.NONE)
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Lance> lancesRecebidos = new ArrayList<Lance>();
 
 	@OneToOne
-	@Getter(lombok.AccessLevel.NONE)
-	@Setter(lombok.AccessLevel.NONE)
 	private Lance lanceVencedor;
-
-	public ItemDeLeilao() {
-		super();
-	}
 
 	public ItemDeLeilao(String nome, Double valorMinimo, boolean leilaoAberto) {
 		super();
