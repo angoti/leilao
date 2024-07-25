@@ -15,4 +15,8 @@ public class ParticipanteService {
 	public Participante novo(Participante participante) {
 		return participanteRepository.save(participante);
 	}
+
+	public Participante buscarPorId(Long id) {
+		return participanteRepository.findById(id).get();
+	}
 }
