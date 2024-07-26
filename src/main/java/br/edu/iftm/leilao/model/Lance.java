@@ -15,14 +15,15 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(of = { "valor", "participante" })
+@EqualsAndHashCode(of = { "participante", "valor" })
 @Entity
 public class Lance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Double valor;
-	@ManyToOne // muitos lances é feito por um participante
+
+	@ManyToOne
 	private Participante participante;
 
 	public Lance(Double valor, Participante participante) {
@@ -30,4 +31,5 @@ public class Lance {
 		this.valor = valor;
 		this.participante = participante;
 	}
+
 }

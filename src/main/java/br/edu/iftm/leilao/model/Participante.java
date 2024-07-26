@@ -13,8 +13,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode(of = { "cpf" })
+@ToString(exclude = { "id" })
+@EqualsAndHashCode(of = { "nome", "cpf" })
 @Entity
 public class Participante {
 	@Id

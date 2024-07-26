@@ -1,5 +1,8 @@
 package br.edu.iftm.leilao.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +13,29 @@ import br.edu.iftm.leilao.repository.ParticipanteRepository;
 public class ParticipanteService {
 
 	@Autowired
-	private ParticipanteRepository participanteRepository;
+	private ParticipanteRepository repo;
 
-	public Participante novo(Participante participante) {
-		return participanteRepository.save(participante);
+	public void delete(Long id) {
+		repo.deleteById(id);
 	}
 
-	public Participante buscarPorId(Long id) {
-		return participanteRepository.findById(id).get();
+	public Participante busca(Long id) {
+		return repo.findById(id).get();
 	}
+
+	public Participante atualiza(Long id, Participante participante) {
+		participante.setId(id);
+		return repo.save(participante);
+	}
+
+	public Participante salva(Participante participante) {
+		return repo.save(participante);
+	}
+
+	public List<Participante> busca() {
+		List<Participante> lista = new ArrayList<Participante>();
+		repo.findAll().forEach(p -> lista.add(p));
+		return lista;
+	}
+
 }

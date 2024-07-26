@@ -14,69 +14,55 @@ import br.edu.iftm.leilao.repository.ItemDeLeilaoRepository;
 public class ItemdeLeilaoService {
 
 	@Autowired
-	private ItemDeLeilaoRepository itemDeLeilaoRepository;
-
-	@Autowired
-	private ParticipanteService participanteService;
+	private ItemDeLeilaoRepository repo;
 
 	@Autowired
 	private LanceService lanceService;
 
-	public ItemDeLeilao novo(ItemDeLeilao item) {
-		return itemDeLeilaoRepository.save(item);
+	public void delete(Long id) {
+		repo.deleteById(id);
 	}
 
-	public ItemDeLeilao buscarPorId(Long id) {
-		return itemDeLeilaoRepository.findById(id).get();
+	public ItemDeLeilao busca(Long id) {
+		return repo.findById(id).get();
 	}
 
-	public void deletarPorId(Long id) {
-		itemDeLeilaoRepository.deleteById(id);
+	public ItemDeLeilao atualiza(Long id, ItemDeLeilao item) {
+		ItemDeLeilao itemExistente = repo.findById(id).get();
+		itemExistente.setNome(item.getNome());
+		itemExistente.setValorMinimo(item.getValorMinimo());
+		itemExistente.setLeilaoAberto(item.isLeilaoAberto());
+		return repo.save(itemExistente);
 	}
 
-	public ItemDeLeilao atualiza(ItemDeLeilao item, Long id) {
-		item.setId(id);
-		return itemDeLeilaoRepository.save(item);
+	public ItemDeLeilao salva(ItemDeLeilao item) {
+		return repo.save(item);
 	}
 
-	public List<ItemDeLeilao> buscarTodos() {
-		List<ItemDeLeilao> itens = new ArrayList<ItemDeLeilao>();
-		itemDeLeilaoRepository.findAll().forEach(item -> itens.add(item));
-		return itens;
+	public List<ItemDeLeilao> itens() {
+		List<ItemDeLeilao> lista = new ArrayList<ItemDeLeilao>();
+		repo.findAll().forEach(i -> lista.add(i));
+		return lista;
 	}
 
-	public Lance registraLance(Lance lance, Long id) {
-		System.out.println("Lance: " + lance);
-		System.out.println("ID: " + id);
-		ItemDeLeilao item = itemDeLeilaoRepository.findById(id).get();
+	public ItemDeLeilao registraLance(Lance lance, Long id) {
+		ItemDeLeilao item = repo.findById(id).get();
 		if (item.isLeilaoAberto()) {
-			Lance lancePersistido = new Lance(lance.getValor(),
-					participanteService.buscarPorId(lance.getParticipante().getId()));
-			System.out.println("Lance Persistido: " + lancePersistido);
-			item.adicionarLance(lancePersistido);
-			lanceService.save(lancePersistido);
-			if (item.getLanceVencedor() == null) {
+			Lance lancePersistido = lanceService.salva(lance);
+			item.getLancesRecebidos().add(lancePersistido);
+			if (item.getLanceVencedor() == null || item.getLanceVencedor().getValor() < lance.getValor()) {
 				item.setLanceVencedor(lancePersistido);
-			} else {
-				if (lancePersistido.getValor() > item.getLanceVencedor().getValor()) {
-					item.setLanceVencedor(lancePersistido);
-				}
 			}
-			itemDeLeilaoRepository.save(item);
-			return lancePersistido;
+		} else {
+			throw new UnsupportedOperationException("Leilão já encerrado");
 		}
-		return null;
+		return repo.save(item);
 	}
 
-	public Lance atualiza(Long id) {
-		ItemDeLeilao item = itemDeLeilaoRepository.findById(id).get();
-		if (item.isLeilaoAberto()) {
-			Lance lance = item.getLanceVencedor();
-			item.setLeilaoAberto(false);
-			itemDeLeilaoRepository.save(item);
-			return lance;
-		}
-		return null;
+	public ItemDeLeilao encerraLeilao(Long id) {
+		ItemDeLeilao item = repo.findById(id).get();
+		item.setLeilaoAberto(false);
+		return repo.save(item);
 	}
 
 }

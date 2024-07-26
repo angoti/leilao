@@ -19,8 +19,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"lancesRecebidos","lanceVencedor"})
-@EqualsAndHashCode(of = {"nome", "valorMinimo"})
+@ToString(exclude = { "id", "lancesRecebidos", "lanceVencedor" })
+@EqualsAndHashCode(of = { "nome", "valorMinimo" })
 @Entity
 public class ItemDeLeilao {
 	@Id
@@ -30,7 +30,7 @@ public class ItemDeLeilao {
 	private Double valorMinimo;
 	private boolean leilaoAberto;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany
 	private List<Lance> lancesRecebidos = new ArrayList<Lance>();
 
 	@OneToOne
@@ -41,11 +41,5 @@ public class ItemDeLeilao {
 		this.nome = nome;
 		this.valorMinimo = valorMinimo;
 		this.leilaoAberto = leilaoAberto;
-	}
-
-	public void adicionarLance(Lance lance) {
-		if (lance.getValor() >= this.valorMinimo) {
-			this.lancesRecebidos.add(lance);
-		}
 	}
 }

@@ -33,19 +33,13 @@ public class LeilaoApplication implements CommandLineRunner {
 		ItemDeLeilao bicicleta = new ItemDeLeilao("Bicicleta", 100.0, true);
 		Participante joao = new Participante("João", "12345");
 		Lance lance = new Lance(100.0, joao);
-		bicicleta.adicionarLance(lance);
+		bicicleta.getLancesRecebidos().add(lance);
 
 		participante.save(joao);
 		lanceRepository.save(lance);
 		itemDeLeilaoRepository.save(bicicleta);
 
-		itemDeLeilaoRepository.findAll().forEach(item -> {
-			for (Lance l : item.getLancesRecebidos()) {
-				System.out.println("Item: " + item.getNome() + " - Lance: " + l.getValor() + " - Participante: "
-						+ l.getParticipante().getNome());
-
-			}
-		});
+		System.out.println(lance);
 	}
 
 }
