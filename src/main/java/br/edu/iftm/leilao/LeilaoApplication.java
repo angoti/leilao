@@ -38,6 +38,8 @@ public class LeilaoApplication implements CommandLineRunner {
 		participante.save(joao);
 		lanceRepository.save(lance);
 		itemDeLeilaoRepository.save(bicicleta);
+
+		System.out.println(lance);
 	}
 
 }

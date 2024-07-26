@@ -5,9 +5,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data // boilerplate
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString(exclude = { "id" })
+@EqualsAndHashCode(of = { "participante", "valor" })
 @Entity
 public class Lance {
 	@Id
@@ -23,4 +31,5 @@ public class Lance {
 		this.valor = valor;
 		this.participante = participante;
 	}
+
 }
