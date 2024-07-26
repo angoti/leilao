@@ -33,7 +33,7 @@ public class LeilaoApplication implements CommandLineRunner {
 		ItemDeLeilao bicicleta = new ItemDeLeilao("Bicicleta", 100.0, true);
 		Participante joao = new Participante("João", "12345");
 		Lance lance = new Lance(100.0, joao);
-		bicicleta.adicionarLance(lance);
+		bicicleta.getLancesRecebidos().add(lance);
 
 		participante.save(joao);
 		lanceRepository.save(lance);

@@ -29,8 +29,6 @@ public class ItemDeLeilao {
 	private Double valorMinimo;
 	private boolean leilaoAberto;
 
-	// Relacionamento bidirecional
-	// Um item de leilão pode ter vários lances
 	@OneToMany
 	private List<Lance> lancesRecebidos = new ArrayList<Lance>();
 
@@ -42,11 +40,5 @@ public class ItemDeLeilao {
 		this.nome = nome;
 		this.valorMinimo = valorMinimo;
 		this.leilaoAberto = leilaoAberto;
-	}
-
-	public void adicionarLance(Lance lance) {
-		if (lance.getValor() >= this.valorMinimo) {
-			this.lancesRecebidos.add(lance);
-		}
 	}
 }

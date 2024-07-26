@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = { "id" })
+@ToString
 @EqualsAndHashCode(of = { "participante", "valor" })
 @Entity
 public class Lance {
@@ -23,7 +23,7 @@ public class Lance {
 	private Long id;
 	private Double valor;
 
-	@OneToOne // um lance é feito por um participante
+	@ManyToOne
 	private Participante participante;
 
 	public Lance(Double valor, Participante participante) {
